@@ -17,14 +17,26 @@
 <script setup lang="ts">
 import SidebarMenu from '@/components/SiderMenu.vue';
 import { useRouter } from 'vue-router';
+import { logout } from "../services/authUser.ts";
 
 const router = useRouter();
 
-const handleLogout = (): void => {
-  console.log('Cerrando sesión...');
-  // Lógica real de logout: limpiar token, limpiar estado (Pinia), etc.
-  localStorage.removeItem('user-token'); // ¡Ejemplo simple!
-  router.push({ name: 'Login' });
+const handleLogout = async (): void => {
+
+  localStorage.removeItem('user-token');
+
+  try {
+
+    const resp = await logout();
+    if (!resp) {
+      router.push({ name: 'Login' });
+    } else {
+      console.log(resp);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+
 };
 </script>
 

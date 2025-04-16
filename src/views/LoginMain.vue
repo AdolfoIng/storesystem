@@ -34,6 +34,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { signIn } from "../services/authUser.ts";
+
 
 const router = useRouter();
 const username = ref<string>('');
@@ -53,21 +55,18 @@ async function handleLogin(): Promise<void> {
     feedbackMessage.value = 'Por favor, completa ambos campos.';
     isError.value = true;
     isLoading.value = false;
-    return; // Detener si falta información
+    return;
   }
 
   console.log('Intentando iniciar sesión con:');
   console.log('Usuario:', username.value);
 
-  // --- SIMULACIÓN DE LLAMADA A API ---
   try {
 
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    //await new Promise(resolve => setTimeout(resolve, 1500));
+    const response = await signIn(username.value, password.value);
 
-    // Simulación de éxito (puedes cambiar esto para probar el error)
-    const success = Math.random() > 0.3; // 70% de éxito simulado
-
-    if (success) {
+    if (response) {
       feedbackMessage.value = `¡Bienvenido, ${username.value}! Login exitoso (simulado).`;
       isError.value = false;
       router.push({ name: 'DashboardLayout' });
