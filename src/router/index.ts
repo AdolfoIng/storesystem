@@ -1,10 +1,12 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { useAuth } from '../services/authUser'
 
-const Login = () => import('../views/LoginMain.vue');
-const DashboardLayout = () => import('../views/DashboardLayout.vue');
-const DashboardHome = () => import('../views/dashboard/DashboardHome.vue');
-const Inventory = () => import('../views/dashboard/InventaryProduct.vue');
-const Register = () => import('../views/dashboard/RegisterProduct.vue');
+const Login = () => import('../views/LoginMain.vue')
+const DashboardLayout = () => import('../views/DashboardLayout.vue')
+const DashboardHome = () => import('../views/dashboard/DashboardHome.vue')
+const Inventory = () => import('../views/dashboard/InventaryProduct.vue')
+const Register = () => import('../views/dashboard/RegisterProduct.vue')
+
 // Define las rutas usando el tipo RouteRecordRaw
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,30 +23,40 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard',
     name: 'DashboardLayout',
     component: DashboardLayout,
+    meta: { requiresAuth: true },
     redirect: { name: 'DashboardHome' },
     children: [
       {
         path: 'home',
         name: 'DashboardHome',
-        component: DashboardHome
+        component: DashboardHome,
       },
       {
         path: 'inventory',
         name: 'Inventory',
-        component: Inventory
+        component: Inventory,
       },
       {
         path: 'register',
         name: 'Register',
-        component: Register
-      }
-    ]
+        component: Register,
+      },
+    ],
   },
-];
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-});
+})
 
-export default router;
+router.beforeEach(async (to, _from, next) => {
+  const { user } = useAuth()
+  if (to.meta.requiresAuth && !user.value) {
+    next('/')
+  } else {
+    next()
+  }
+})
+
+export default router

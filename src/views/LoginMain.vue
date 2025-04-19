@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { signIn } from "../services/authUser.ts";
+import { useAuth } from "../services/authUser.ts";
 
 
 const router = useRouter();
@@ -43,6 +43,7 @@ const password = ref<string>('');
 const isLoading = ref<boolean>(false); // Para feedback visual durante el envío
 const feedbackMessage = ref<string | null>(null); // Mensaje para el usuario (puede ser string o null)
 const isError = ref<boolean>(false);
+const { signIn } = useAuth()
 
 
 async function handleLogin(): Promise<void> {
@@ -57,13 +58,10 @@ async function handleLogin(): Promise<void> {
     isLoading.value = false;
     return;
   }
-
-  console.log('Intentando iniciar sesión con:');
-  console.log('Usuario:', username.value);
+  console.log('Iniciando Session :', username.value);
 
   try {
 
-    //await new Promise(resolve => setTimeout(resolve, 1500));
     const response = await signIn(username.value, password.value);
 
     if (response) {

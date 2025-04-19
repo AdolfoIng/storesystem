@@ -17,9 +17,10 @@
 <script setup lang="ts">
 import SidebarMenu from '@/components/SiderMenu.vue';
 import { useRouter } from 'vue-router';
-import { logout } from "../services/authUser.ts";
+import { useAuth } from "../services/authUser.ts";
 
 const router = useRouter();
+const { signOut } = useAuth()
 
 const handleLogout = async (): void => {
 
@@ -27,7 +28,7 @@ const handleLogout = async (): void => {
 
   try {
 
-    const resp = await logout();
+    const resp = await signOut();
     if (!resp) {
       router.push({ name: 'Login' });
     } else {
