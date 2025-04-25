@@ -6,7 +6,6 @@ export interface Product {
 }
 
 export interface InsertProduct {
-  id: number
   name: string
   brand: string
   price: number

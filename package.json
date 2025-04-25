@@ -14,12 +14,20 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
+    "@tailwindcss/vite": "^4.1.4",
+    "@types/uuid": "^10.0.0",
+    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
+    "pinia": "^3.0.2",
+    "tailwindcss": "^4.1.4",
+    "uuid": "^11.1.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.1",
+    "@types/lodash": "^4.17.16",
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/eslint-config-prettier": "^10.2.0",

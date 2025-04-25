@@ -1,50 +1,69 @@
 <template>
   <div>
-    <h3>Registrar Producto </h3>
+    <StepProductInfo v-if="step === 0" :product="product" @update:product="(val) => (product = val)" />
 
-    <form @submit.prevent="addProduct">
-      <input v-model="name" placeholder="Nombre del producto" required />
-      <input v-model="brand" placeholder="Marca" required />
-      <input v-model.number="price" placeholder="Precio" type="number" required />
-      <button type="submit">Registrar producto</button>
-    </form>
+    <StepColors v-else-if="step === 1" :colors="colors" :colorOptions="colorOptions"
+      @update:colors="(val) => (colors = val)" />
+
+    <StepSizes v-else-if="step === 2" :colors="colors" :tallaOptions="tallaOptions"
+      @update:colors="(val) => (colors = val)" />
+
+    <div class="mt-4">
+      <button @click="prevStep" :disabled="step === 0">Atrás</button>
+      <button @click="nextStep" :disabled="step === steps.length - 1">Siguiente</button>
+    </div>
   </div>
-
 </template>
 
+
 <script setup lang="ts">
-import { registerProduct } from "../../services/productService.ts";
-import { useAuth } from "../../services/authUser.ts";
-import type { InsertProduct } from '../../types';
-import { ref } from 'vue';
-const { user } = useAuth();
+import { ref, onMounted } from 'vue'
+import { supabase } from '../../services/supabaseClient'
+import StepProductInfo from '@/components/register-product/StepProductInfo.vue'
+import StepColors from '@/components/register-product/StepColors.vue'
+import StepSizes from '@/components/register-product/StepSizes.vue'
+import type {
+  Product,
+  ProductoColorConTallas,
+  Color,
+  Talla,
+} from '@/types/product'
 
-const name = ref<string>('');
-const brand = ref<string>('');
-const price = ref<number>(0);
+const step = ref(0)
+const steps = [StepProductInfo, StepColors, StepSizes]
+//const currentStepComponent = computed(() => steps[step.value])
 
-async function addProduct() {
-  if (!user.value) return alert('Debes estar autenticado');
-  const product: InsertProduct = {
-    name: name.value.toUpperCase(),
-    brand: brand.value.toUpperCase(),
-    price: price.value,
-    user_id: user.value.id,
-  }
-  console.log(product);
-  try {
-    await registerProduct(product)
-    alert('Producto registrado correctamente')
-    name.value = ''
-    brand.value = ''
-    price.value = 0
-  } catch (error) {
-    alert('Ocurrió un error al registrar el producto');
-    console.log(error);
-  }
+const product = ref<Product>({
+  name: '',
+  brand: '',
+  price: 0,
+})
 
+const colors = ref<ProductoColorConTallas[]>([])
+const colorOptions = ref<Color[]>([])
+const tallaOptions = ref<Talla[]>([])
+
+
+function nextStep() {
+  if (step.value < steps.length - 1) step.value++
 }
 
+function prevStep() {
+  if (step.value > 0) step.value--
+}
+
+onMounted(async () => {
+  const { data: colorsData, error: colorError } = await supabase.from('color').select('*')
+  if (!colorError && colorsData) colorOptions.value = colorsData
+
+  const { data: tallasData, error: tallaError } = await supabase.from('talla').select('*')
+  if (!tallaError && tallasData) tallaOptions.value = tallasData
+})
 </script>
 
-<style scoped></style>
+<style scoped>
+button {
+  margin: 0 5px;
+  padding: 8px 16px;
+}
+</style>

@@ -1,35 +1,36 @@
 <template>
-  <div class="login-form-container">
-    <h2>Iniciar Sesión</h2>
-
-    <!-- Mensaje de Feedback -->
-    <p v-if="feedbackMessage" :class="['feedback', { 'error': isError }]">
-      {{ feedbackMessage }}
-    </p>
-
-    <form @submit.prevent="handleLogin">
-      <div class="form-group">
-        <label for="username">Usuario:</label>
-        <!--
-          v-model establece un enlace bidireccional entre el input
-          y nuestra variable reactiva 'username'.
-          TypeScript asegura que 'username' es un string.
-        -->
-        <input id="username" v-model="username" type="text" required placeholder="Tu nombre de usuario o email" />
-      </div>
-
-      <div class="form-group">
-        <label for="password">Contraseña:</label>
-        <!-- v-model enlaza con la variable reactiva 'password' -->
-        <input id="password" v-model="password" type="password" required placeholder="Tu contraseña" />
-      </div>
-
-      <button type="submit" :disabled="isLoading">
-        {{ isLoading ? 'Ingresando...' : 'Ingresar' }}
-      </button>
-    </form>
+  <div class="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-gray-900 rounded-2xl shadow-xl p-6">
+      <h1 class="text-2xl font-semibold text-white mb-6 text-center">
+        Iniciar Sesión
+      </h1>
+      <!-- Mensaje de Feedback -->
+      <p v-if="feedbackMessage" :class="['feedback', { 'error': isError }]">
+        {{ feedbackMessage }}
+      </p>
+      <form @submit.prevent="handleLogin" class="space-y-4">
+        <div>
+          <label class="block text-gray-400 mb-1" for="username">Usuario</label>
+          <input v-model="username" type="username" id="username"
+            class="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            required placeholder="Tu nombre de usuario o email" />
+        </div>
+        <div>
+          <label class="block text-gray-400 mb-1" for="password">Contraseña</label>
+          <input v-model="password" type="password" id="password"
+            class="w-full px-4 py-2 bg-gray-800 border border-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            required placeholder="Tu contraseña" />
+        </div>
+        <button type="submit"
+          class="w-full py-2 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-lg transition duration-300"
+          :disabled="isLoading">
+          {{ isLoading ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+      </form>
+    </div>
   </div>
 </template>
+
 
 <script setup lang="ts">
 import { ref } from 'vue';
@@ -85,86 +86,4 @@ async function handleLogin(): Promise<void> {
 
 </script>
 
-<style scoped>
-/* 'scoped' asegura que estos estilos solo apliquen a este componente */
-.login-form-container {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #d5d4d4;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-  color: #555;
-}
-
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  /* Asegura que padding no aumente el tamaño total */
-}
-
-input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-}
-
-button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-button:hover:not(:disabled) {
-  background-color: #0056b3;
-}
-
-button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
-}
-
-.feedback {
-  text-align: center;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border-radius: 4px;
-  background-color: #e2f0ff;
-  /* Azul claro para mensajes generales */
-  color: #004085;
-  border: 1px solid #b8daff;
-}
-
-.feedback.error {
-  background-color: #f8d7da;
-  /* Rojo claro para errores */
-  color: #721c24;
-  border-color: #f5c6cb;
-}
-</style>
+<style scoped></style>

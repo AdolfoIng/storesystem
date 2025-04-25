@@ -30,7 +30,7 @@
 <script setup lang="ts">
 // Importaciones de Vue y otras utilidades
 import { ref, watch, onMounted } from 'vue';
-import { debounce } from 'lodash-es';
+import { debounce } from 'lodash';
 
 // Importaciones de componentes y servicios
 import ProductTable from '../../components/product/ProductTable.vue';
@@ -56,7 +56,11 @@ const findProducts = async (term: string) => {
     products.value = result || []; // Actualiza la lista de productos (o array vacío si es null)
   } catch (err) {
     console.error('Error al buscar productos:', err);
-    error.value = err.message || 'Ocurrió un error al buscar.'; // Muestra el error
+    if (err instanceof Error) {
+      error.value = err.message;
+    } else {
+      error.value = 'Ocurrió un error al buscar.';
+    }// Muestra el error
     products.value = []; // Limpia la tabla en caso de error
   } finally {
     isLoading.value = false; // Desactiva el indicador de carga
