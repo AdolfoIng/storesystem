@@ -59,7 +59,6 @@ async function handleLogin(): Promise<void> {
     isLoading.value = false;
     return;
   }
-  console.log('Iniciando Session :', username.value);
 
   try {
 

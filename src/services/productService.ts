@@ -71,7 +71,7 @@ export const getProductStock = async (productId: number): Promise<DetailedStockI
       color_name: item.productocolor.color.name_color,
     }))
 
-    console.log('Stock detallado obtenido:', detailedStock)
+    //console.log('Stock detallado obtenido:', detailedStock)
     return detailedStock
   } catch (error) {
     console.error('An error occurred in getProductStock:', error)
@@ -81,7 +81,7 @@ export const getProductStock = async (productId: number): Promise<DetailedStockI
 
 export async function loadProducts() {
   try {
-    console.log('Loading ...')
+    //console.log('Loading ...')
     const { data, error } = await supabase.from('producto').select('*')
 
     if (error) {
@@ -89,7 +89,7 @@ export async function loadProducts() {
       throw new Error(`Failed to fetch product: ${error.message}`)
     }
 
-    console.log('response: ', data)
+    //console.log('response: ', data)
 
     return data
   } catch (error) {
