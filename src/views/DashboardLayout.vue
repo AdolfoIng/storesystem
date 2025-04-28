@@ -53,32 +53,28 @@
 import { ref } from 'vue';
 import SidebarMenu from '@/components/SiderMenu.vue';
 import { useRouter } from 'vue-router';
-import { useAuth } from "../services/authUser.ts"; // Ajusta la ruta si es necesario
+import { useAuth } from "../services/authUser.ts";
+
 
 const menuOpen = ref(false)
 
 const router = useRouter();
 const { signOut } = useAuth();
-//import { HomeIcon, BoxIcon, SettingsIcon, MenuIcon, LogOutIcon } from 'lucide-vue-next'
 
 const menuItems = [
   { name: 'Home', to: '/dashboard/home' },
   { name: 'Ver Productos', to: '/dashboard/inventory' },
   { name: 'Register Product', to: '/dashboard/register' },
-  /* { name: 'Logout', to: '/logout', icon: LogOutIcon }, */
 ]
 
 const handleLogout = async (): Promise<void> => {
+
   try {
-    const resp = await signOut();
 
-    if (resp?.error) {
-      console.error("Error during logout:", resp.error.message || resp.error);
-    }
+    await signOut();
+    localStorage.removeItem('user-token');
+    await router.push({ name: 'Login' });
 
-    localStorage.removeItem('user-token'); // Ahora SÍ lo quitamos después del signOut
-
-    await router.push({ name: 'Login' }); // Esperamos el push para asegurarnos que navega bien
   } catch (err) {
     console.error("Unexpected error during logout:", err);
 
