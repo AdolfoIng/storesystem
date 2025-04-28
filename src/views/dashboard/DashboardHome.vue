@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Main main .........</h2>
+    <h2>Welcome to System Inventory 😎</h2>
   </div>
 </template>
 
