@@ -68,10 +68,15 @@ const fetchStock = async (productId: number) => {
     console.log("Stock recibido en Dialog:", stockDetails.value);
   } catch (error) {
     console.error("Error en fetchStock (Dialog):", error);
-    stockError.value = error.message || 'Error desconocido';
+    if (error instanceof Error) {
+      stockError.value = error.message;
+    } else {
+      stockError.value = 'Error desconocido';
+    }
   } finally {
     isLoadingStock.value = false;
   }
+
 };
 
 // --- Observador (Watcher) ---
@@ -80,7 +85,7 @@ const fetchStock = async (productId: number) => {
 watch(
   () => [props.product, props.isOpen],
   ([newProduct, newIsOpen]) => {
-    if (newIsOpen && newProduct?.id) {
+    if (newIsOpen && newProduct && typeof newProduct !== 'boolean' && 'id' in newProduct) {
       // Si se abre y hay producto, busca el stock
       fetchStock(newProduct.id);
     } else if (!newIsOpen) {

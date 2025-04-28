@@ -68,23 +68,26 @@ const menuItems = [
   /* { name: 'Logout', to: '/logout', icon: LogOutIcon }, */
 ]
 
-const handleLogout = async (): void => {
-  localStorage.removeItem('user-token'); // Considera mover esto después del signOut exitoso
-
+const handleLogout = async (): Promise<void> => {
   try {
     const resp = await signOut();
-    if (!resp) { // Asumiendo que null/undefined significa éxito
-      router.push({ name: 'Login' });
-    } else {
-      console.error("Logout failed:", resp);
-      // Podrías querer mostrar un error al usuario pero quizás igual redirigir
-      router.push({ name: 'Login' });
+
+    if (resp?.error) {
+      console.error("Error during logout:", resp.error.message || resp.error);
     }
+
+    localStorage.removeItem('user-token'); // Ahora SÍ lo quitamos después del signOut
+
+    await router.push({ name: 'Login' }); // Esperamos el push para asegurarnos que navega bien
   } catch (err) {
-    console.error("An error occurred during logout:", err);
-    router.push({ name: 'Login' }); // Redirigir en caso de error de red/excepción
+    console.error("Unexpected error during logout:", err);
+
+    // Intentamos limpiar y redirigir de todas maneras
+    localStorage.removeItem('user-token');
+    await router.push({ name: 'Login' });
   }
 };
+
 
 
 </script>
