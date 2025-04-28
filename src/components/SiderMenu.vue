@@ -5,7 +5,7 @@
     <nav class="flex flex-col space-y-3">
       <RouterLink v-for="item in menuItems" :key="item.name" :to="item.to"
         class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-800 transition" active-class="bg-emerald-600">
-        <component :is="item.icon" class="w-5 h-5" />
+        <!-- <component :is="item.icon" class="w-5 h-5" /> -->
         {{ item.name }}
       </RouterLink>
     </nav>
@@ -21,7 +21,7 @@
     <div @click="requestLogout"
       class="flex items-center gap-2 px-3 py-2 my-2 rounded-lg hover:bg-red-400 transition hover:cursor-pointer">
 
-      <LogOutIcon class="w-6 h-6 text-white" />
+      <!-- <LogOutIcon class="w-6 h-6 text-white" /> -->
       <h2>Cerrar Sesión</h2>
     </div>
   </aside>
@@ -70,13 +70,13 @@
 
 <script setup lang="ts">
 // Icons (puedes usar Heroicons, Lucide o los que prefieras)
-import { HomeIcon, BoxIcon, SettingsIcon, LogOutIcon } from 'lucide-vue-next'
+//import { HomeIcon, BoxIcon, SettingsIcon, LogOutIcon } from 'lucide-vue-next'
 
 
 const menuItems = [
-  { name: 'Home', to: '/dashboard/home', icon: HomeIcon },
-  { name: 'Ver Productos', to: '/dashboard/inventory', icon: BoxIcon },
-  { name: 'Register Product', to: '/dashboard/register', icon: SettingsIcon },
+  { name: 'Home', to: '/dashboard/home' },
+  { name: 'Ver Productos', to: '/dashboard/inventory' },
+  { name: 'Register Product', to: '/dashboard/register' },
   /* { name: 'Logout', to: '/logout', icon: LogOutIcon }, */
 ]
 
